@@ -3,7 +3,19 @@ import {AppRegistry, ToastAndroid} from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import '../lib/default';
 import axios from 'axios';
-import {Button, Col, Form, Grid, Input, Item, Label, Row, Text, Container, Spinner} from 'native-base';
+import {
+    Button,
+    Col,
+    Form,
+    Grid,
+    Input,
+    Item,
+    Label,
+    Row,
+    Text,
+    Container,
+    Spinner
+} from 'native-base';
 import update from 'react-addons-update';
 import Globals from "../Globals";
 
@@ -18,7 +30,8 @@ class FormUser extends Component {
                 name: '',
                 email: '',
                 id: null
-            }
+            },
+            errorMsg: ''
         };
     }
 
@@ -59,11 +72,10 @@ class FormUser extends Component {
             });
             this.props.navigation.dispatch(resetAction);
 
-            this.setState({ loading: false });
+            this.setState({ loading: false, errorMsg: false });
 
-        }).catch((error) => {
-            console.log(error);
-            this.setState({ loading: false });
+        }).catch(error => {
+            this.setState({ loading: false, errorMsg: error.response.data.message });
         });
     };
 
@@ -132,6 +144,9 @@ class FormUser extends Component {
                             </Grid>
                         </Form>
                     </Container>
+                </Row>
+                <Row>
+                    <Col/><Col><Label style={{ color: 'red' }}>{this.state.errorMsg}</Label></Col><Col/>
                 </Row>
             </Grid>
         );
